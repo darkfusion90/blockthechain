@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
-function App() {
+import Account from "./types/Account";
+import AccountDetails from "./components/AccountDetais";
+import BalanceDetails from "./components/BalanceDetails";
+
+import "./App.css";
+
+const App = () => {
+  const [account, setAccount] = React.useState<Account>();
+
+  const renderContent = () => {
+    const hasMetamask = window.ethereum && window.ethereum.isMetaMask;
+    if (!hasMetamask) {
+      return (
+        <pre>You need to install Metamask in your browser for this to work</pre>
+      );
+    }
+
+    return (
+      <>
+        <AccountDetails
+          account={account}
+          updateAccount={(account) => setAccount(account)}
+        />
+        <BalanceDetails account={account} />
+      </>
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      {renderContent()}
     </div>
   );
-}
+};
 
 export default App;
